@@ -7,6 +7,7 @@ import webpackConfig from './webpack.config.babel';
 import ghPages from 'gulp-gh-pages';
 
 gulp.task('deploy', function() {
+  gulp.start('default');
   return gulp.src('./dist/**/*')
     .pipe(ghPages());
 });
