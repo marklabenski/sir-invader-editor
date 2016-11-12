@@ -43,6 +43,7 @@ gulp.task('watch-test', () => {
 });
 
 gulp.task('watch', () => {
+  gulp.start('default');
   return gulp.watch(['src/**'], ['default']);
 });
 
