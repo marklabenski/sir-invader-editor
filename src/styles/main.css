@@ -25,11 +25,13 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
   flex-wrap: wrap;
 }
 .pixel-edit .pixel {
-
   width: 30px;
   height: 30px;
   margin:0;
   line-height:0;
   font-size: 0;
+}
 
+.exported svg {
+  width: 90px;  
 }

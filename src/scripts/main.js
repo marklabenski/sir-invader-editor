@@ -1,6 +1,8 @@
 import Invader from 'sir-invader';
 const numPixels = 9 * 9;
 
+console.log(Invader);
+
 for(let i=0; i < numPixels; i++) {
   let createDiv = document.createElement('div');
   createDiv.classList.add('pixel');
@@ -45,17 +47,21 @@ const gatherPropsFromFields = function () {
     name: document.querySelector('input[name="invader.name"]').value,
     //appearance: {}
   };
-  props.appearance = gatherAppearanceArray(allPixels);
-  props.cost = props.health + props.speed + props.armed;
+  props.appearance = {pixels: gatherAppearanceArray(allPixels) };
 
   return props;
 };
 
 document.querySelector('.create').addEventListener("mousedown", (evt) => {
   const props = gatherPropsFromFields();
-
-  document.querySelector('input[name="invader.cost"]').value = props.cost;
-
   const firstInvader = Invader.createInvader(props);
+
+  document.querySelector('input[name="invader.cost"]').value = firstInvader.cost;
   console.log(firstInvader);
+});
+
+document.querySelector('.export-svg').addEventListener("mousedown", (evt) => {
+  const props = gatherPropsFromFields();
+  const firstInvader = Invader.createInvader(props);
+  document.querySelector(".exported").innerHTML = Invader.exportSvg(firstInvader);
 });
