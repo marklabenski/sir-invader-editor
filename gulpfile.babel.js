@@ -1,5 +1,6 @@
 import gulp from 'gulp';
 import babel from 'gulp-babel';
+import sourcemaps from 'gulp-sourcemaps';
 import mocha from 'gulp-mocha';
 import gutil from 'gulp-util';
 import webpack from 'webpack';
@@ -16,7 +17,9 @@ gulp.task('default', ['webpack', 'copy']);
 
 gulp.task('babel', () => {
   return gulp.src('src/scripts/**/*.js')
+    .pipe(sourcemaps.init())
     .pipe(babel())
+    .pipe(sourcemaps.write('../dist/'))
     .pipe(gulp.dest('target'));
 });
 
