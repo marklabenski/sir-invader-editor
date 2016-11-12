@@ -1,8 +1,5 @@
 import createInvader from './invader/invader.js';
-import mocha from 'gulp-mocha';
 const numPixels = 9 * 9;
-
-
 
 for(let i=0; i < numPixels; i++) {
   let createDiv = document.createElement('div');
