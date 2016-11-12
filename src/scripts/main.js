@@ -1,4 +1,4 @@
-import createInvader from './invader/invader.js';
+import Invader from 'sir-invader';
 const numPixels = 9 * 9;
 
 for(let i=0; i < numPixels; i++) {
@@ -56,6 +56,6 @@ document.querySelector('.create').addEventListener("mousedown", (evt) => {
 
   document.querySelector('input[name="invader.cost"]').value = props.cost;
 
-  const firstInvader = createInvader(props);
+  const firstInvader = Invader.createInvader(props);
   console.log(firstInvader);
 });
