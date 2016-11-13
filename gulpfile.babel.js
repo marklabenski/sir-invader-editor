@@ -52,7 +52,11 @@ gulp.task('webpack', ['test'], function(callback) {
   var myConfig = Object.create(webpackConfig);
   myConfig.plugins = [
 		new webpack.optimize.DedupePlugin(),
-		new webpack.optimize.UglifyJsPlugin()
+		new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        drop_debugger: false
+      }
+    })
   ];
 
   // run webpack
