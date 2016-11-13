@@ -1,7 +1,54 @@
 import Invader from 'sir-invader';
 const numPixels = 9 * 9;
 
-console.log(Invader);
+const invaderList = function() {
+  const invaderObj = {
+    invaders: [],
+    storageVersion: 2,
+    render: function () {
+
+      document.querySelector('.list').innerHTML = "";
+      const ulElem = document.createElement('ul');
+      this.invaders.map((invader) => {
+        const liElem = document.createElement('li');
+        ulElem.appendChild(liElem);
+        const divElem = document.createElement('div');
+        liElem.appendChild(divElem);
+        divElem.innerHTML = Invader.exportSvg(invader);
+        const invaderInfos = document.createTextNode(
+          'name: ' + invader.name + "\n" +
+          'health: ' + invader.health + "\n" +
+          'speed: ' + invader.speed + "\n" +
+          'armed: ' + invader.armed + "\n" +
+          'cost: ' + invader.cost + "\n"
+        );
+        liElem.appendChild(invaderInfos);
+        document.querySelector('.list').appendChild(ulElem);
+        localStorage.setItem('invader-list', JSON.stringify(this.invaders));
+        localStorage.setItem('invader-list-version', this.storageVersion);
+      });
+    },
+    loadFromStorage: function (invadersFromStorage) {
+      this.invaders = JSON.parse(invadersFromStorage);
+      this.render();
+    },
+    add: function (invader) {
+      this.invaders.push(invader);
+
+      this.render();
+    },
+    remove: function (invaderIndex) {
+      this.invaders.splice(invaderIndex, 1);
+      this.render();
+    },
+  };
+  return invaderObj;
+}();
+
+if(localStorage.getItem('invader-list') != null && localStorage.getItem('invader-list-version') == invaderList.storageVersion) {
+  invaderList.loadFromStorage(localStorage.getItem('invader-list'));
+}
+
 
 for(let i=0; i < numPixels; i++) {
   let createDiv = document.createElement('div');
@@ -52,16 +99,28 @@ const gatherPropsFromFields = function () {
   return props;
 };
 
-document.querySelector('.create').addEventListener("mousedown", (evt) => {
+document.querySelector('.save').addEventListener("mousedown", (evt) => {
   const props = gatherPropsFromFields();
-  const firstInvader = Invader.createInvader(props);
+  const newInvader = Invader.createInvader(props);
 
-  document.querySelector('input[name="invader.cost"]').value = firstInvader.cost;
-  console.log(firstInvader);
+  document.querySelector('input[name="invader.cost"]').value = newInvader.cost;
+  invaderList.add(newInvader);
 });
 
-document.querySelector('.export-svg').addEventListener("mousedown", (evt) => {
-  const props = gatherPropsFromFields();
-  const firstInvader = Invader.createInvader(props);
-  document.querySelector(".exported").innerHTML = Invader.exportSvg(firstInvader);
+document.querySelector('.export-list').addEventListener("mousedown", (evt) => {
+  document.querySelector('.panel.export textarea').innerHTML = JSON.stringify(invaderList.invaders);
+});
+
+var copyTextareaBtn = document.querySelector('.js-textareacopybtn');
+
+copyTextareaBtn.addEventListener('click', function(event) {
+  var copyTextarea = document.querySelector('.panel.export textarea');
+  copyTextarea.select();
+
+  try {
+    var successful = document.execCommand('copy');
+    var msg = successful ? 'successful' : 'unsuccessful';
+  } catch (err) {
+    console.log('Oops, unable to copy');
+  }
 });
